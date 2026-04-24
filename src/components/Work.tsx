@@ -70,7 +70,7 @@ export default function Work() {
   const containerRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
   const floatingImageRef = useRef<HTMLDivElement>(null);
-  const itemsRef = useRef<HTMLDivElement[]>([]);
+  const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const mouseX = useRef(-9999);
   const mouseY = useRef(-9999);
@@ -91,45 +91,35 @@ export default function Work() {
 
   useEffect(() => {
     const container = containerRef.current;
-    const sticky = stickyRef.current;
     const floatingImage = floatingImageRef.current;
-    const items = itemsRef.current;
 
-    if (!container || !sticky || !floatingImage || items.length === 0) return;
+    if (!container || !floatingImage) return;
 
     const totalItems = projects.length;
     const viewportH = window.innerHeight;
-
-    // Each item takes ~55% of viewport so only ~2 are fully visible at once
-    const itemHeight = Math.max(340, Math.round(viewportH * 0.55));
-
+    const itemHeight = Math.round(viewportH * 0.4);
     const listHeight = totalItems * itemHeight;
-
-    // Offset so first item starts centered vertically in the sticky viewport
-    const centerOffset = viewportH / 2 - itemHeight / 2;
-
-    // Container needs enough height to scroll through all items.
-    // Last item should reach center when scrolled to bottom.
     const maxScroll = listHeight - itemHeight;
-    const spacerHeight = listHeight + viewportH;
-    container.style.height = `${spacerHeight}px`;
+
+    // Container exactly matches listHeight — no gaps, no overshoot
+    container.style.height = `${listHeight}px`;
 
     const handleScroll = () => {
-      const rect = container.getBoundingClientRect();
+      const items: HTMLDivElement[] = itemsRef.current.filter(Boolean) as HTMLDivElement[];
+      if (items.length === 0) return;
 
-      // progress: 0 at start, 1 when scrolled through entire container
+      const rect = container.getBoundingClientRect();
       const rawProgress = -rect.top / (rect.height - viewportH);
       const progress = Math.max(0, Math.min(1, rawProgress));
-
       const currentScroll = progress * maxScroll;
       const viewportCenter = viewportH / 2;
 
       items.forEach((el, i) => {
         const baseY = i * itemHeight;
-        const translateY = baseY - currentScroll + centerOffset;
+        const translateY = baseY - currentScroll;
         const itemCenter = translateY + itemHeight / 2;
         const dist = Math.abs(itemCenter - viewportCenter);
-        const range = viewportH * 0.45; // items outside this range fade out
+        const range = viewportH * 0.45;
         const norm = Math.min(dist / range, 1);
 
         const scale = 1 - norm * 0.2;
@@ -154,33 +144,31 @@ export default function Work() {
         imageX.current += (mouseX.current - imageX.current) * imageLerp;
         imageY.current += (mouseY.current - imageY.current) * imageLerp;
         floatingImage.style.opacity = "1";
-        floatingImage.style.transform = `translate(${imageX.current.toFixed(
-          1
-        )}px, ${imageY.current.toFixed(1)}px) translate(-50%, -50%) scale(1)`;
+        floatingImage.style.transform = `translate(${imageX.current.toFixed(1)}px, ${imageY.current.toFixed(1)}px) translate(-50%, -50%) scale(1)`;
       } else {
         floatingImage.style.opacity = "0";
-        floatingImage.style.transform = `translate(${imageX.current.toFixed(
-          1
-        )}px, ${imageY.current.toFixed(1)}px) translate(-50%, -50%) scale(0.95)`;
+        floatingImage.style.transform = `translate(${imageX.current.toFixed(1)}px, ${imageY.current.toFixed(1)}px) translate(-50%, -50%) scale(0.95)`;
       }
       rafId.current = requestAnimationFrame(animateImage);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("mousemove", handleMouseMove);
+    const scrollHandler = handleScroll;
+    const mouseHandler = handleMouseMove;
+
+    window.addEventListener("scroll", scrollHandler, { passive: true });
+    window.addEventListener("mousemove", mouseHandler);
     handleScroll();
     rafId.current = requestAnimationFrame(animateImage);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("scroll", scrollHandler);
+      window.removeEventListener("mousemove", mouseHandler);
       cancelAnimationFrame(rafId.current);
     };
   }, []);
 
   return (
     <>
-      {/* Floating Project Image (fixed globally) */}
       <div
         ref={floatingImageRef}
         className="fixed top-0 left-0 pointer-events-none z-0"
@@ -199,26 +187,20 @@ export default function Work() {
         }}
       />
 
-      {/* Scroll spacer — creates the scroll distance */}
       <section id="work" ref={containerRef} className="relative bg-[#0A0A0A]">
-        {/* Sticky viewport — pins to screen */}
         <div
           ref={stickyRef}
           className="sticky top-0 left-0 w-full overflow-hidden bg-[#0A0A0A]"
           style={{ height: "100vh", zIndex: 1 }}
         >
-          {/* Section Header */}
           <div className="absolute top-8 left-4 md:left-8 lg:left-16 z-10">
             <EyebrowBadge variant="dark">SELECTED WORK</EyebrowBadge>
           </div>
 
-          {/* Kinetic list items */}
           {projects.map((project, i) => (
             <div
               key={`${project.index}-${i}`}
-              ref={(el) => {
-                if (el) itemsRef.current[i] = el;
-              }}
+              ref={(el) => { itemsRef.current[i] = el; }}
               className="absolute left-0 w-full flex items-center"
               style={{
                 willChange: "transform, opacity, filter",
@@ -244,9 +226,7 @@ export default function Work() {
                     isHovering.current = true;
                     activeImageUrl.current = project.image;
                     const rect = floatingImageRef.current;
-                    if (rect) {
-                      rect.style.backgroundImage = `url('${project.image}')`;
-                    }
+                    if (rect) rect.style.backgroundImage = `url('${project.image}')`;
                     mouseX.current = e.clientX;
                     mouseY.current = e.clientY;
                     imageX.current = e.clientX;
