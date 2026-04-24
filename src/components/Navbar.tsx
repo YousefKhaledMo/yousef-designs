@@ -31,10 +31,36 @@ const linkVariants = {
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLightSection, setIsLightSection] = useState(false);
   const shouldReduceMotion = useReducedMotion() ?? false;
 
   const toggleMenu = () => setIsOpen((prev) => !prev);
   const closeMenu = () => setIsOpen(false);
+
+  // Detect scroll position to switch navbar style
+  useEffect(() => {
+    const handleScroll = () => {
+      const aboutSection = document.getElementById("about");
+      const servicesSection = document.getElementById("services");
+      const scrollY = window.scrollY + 100;
+
+      const inAbout =
+        aboutSection != null &&
+        scrollY >= aboutSection.offsetTop &&
+        scrollY < aboutSection.offsetTop + aboutSection.offsetHeight;
+
+      const inServices =
+        servicesSection != null &&
+        scrollY >= servicesSection.offsetTop &&
+        scrollY < servicesSection.offsetTop + servicesSection.offsetHeight;
+
+      setIsLightSection(inAbout || inServices);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Escape key handler
   useEffect(() => {
@@ -89,7 +115,18 @@ export default function Navbar() {
     <>
       {/* Floating Pill Navbar */}
       <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
-        <div className="backdrop-blur-xl bg-white/5 rounded-full px-6 py-3 border border-white/10 flex items-center gap-8">
+        <motion.div
+          className="backdrop-blur-xl rounded-full px-6 py-3 border flex items-center gap-8 transition-colors duration-300"
+          animate={{
+            backgroundColor: isLightSection
+              ? "rgba(10, 10, 10, 0.8)"
+              : "rgba(245, 242, 237, 0.05)",
+            borderColor: isLightSection
+              ? "rgba(245, 242, 237, 0.15)"
+              : "rgba(245, 242, 237, 0.1)",
+          }}
+          transition={{ duration: 0.3 }}
+        >
           {/* Logo */}
           <a
             href="#"
@@ -141,7 +178,7 @@ export default function Navbar() {
               transition={transition}
             />
           </button>
-        </div>
+        </motion.div>
       </nav>
 
       {/* Mobile Menu Overlay */}

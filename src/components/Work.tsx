@@ -32,7 +32,7 @@ const projects = [
     title: "The Math Mentor",
     category: "Brand Identity",
     year: "2025",
-    image: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=800&q=80",
+    image: "/projects/The Math Mentor covers.png",
     span: { cols: 8, rows: 2 },
     aspectRatio: "aspect-[16/10]",
     overlap: "",
@@ -42,7 +42,7 @@ const projects = [
     title: "Teacher Flow",
     category: "Product Design",
     year: "2025",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+    image: "/projects/Teacher Flow Template.png",
     span: { cols: 4, rows: 1 },
     aspectRatio: "aspect-[4/3]",
     overlap: "-ml-4 -mt-8 md:-mt-12",
@@ -52,7 +52,7 @@ const projects = [
     title: "Outline",
     category: "Brand Identity",
     year: "2023",
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+    image: "/projects/Outline Brand Guidelines.png",
     span: { cols: 5, rows: 1 },
     aspectRatio: "aspect-[16/9]",
     overlap: "",
@@ -126,6 +126,7 @@ export default function Work() {
                 year={project.year}
                 image={project.image}
                 aspectRatio={project.aspectRatio}
+                href={`/projects/${project.id}`}
               />
             </motion.div>
           ))}

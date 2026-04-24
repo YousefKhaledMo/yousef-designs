@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import EyebrowBadge from "./EyebrowBadge";
 
 interface ProjectCardProps {
@@ -7,6 +8,7 @@ interface ProjectCardProps {
   year: string;
   image: string;
   aspectRatio?: string;
+  href?: string;
 }
 
 export default function ProjectCard({
@@ -15,9 +17,10 @@ export default function ProjectCard({
   year,
   image,
   aspectRatio = "aspect-[16/9]",
+  href,
 }: ProjectCardProps) {
-  return (
-    <article className="relative group">
+  const cardContent = (
+    <>
       {/* Outer Shell */}
       <div className="bg-white/5 ring-1 ring-white/10 p-1.5 rounded-[2rem] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-y-[-8px]">
         {/* Inner Core */}
@@ -55,6 +58,16 @@ export default function ProjectCard({
       <span className="absolute bottom-6 right-6 font-mono text-xs text-text-muted-light z-10 pointer-events-none">
         {year}
       </span>
-    </article>
+    </>
   );
+
+  if (href) {
+    return (
+      <Link href={href} className="relative group block cursor-pointer">
+        {cardContent}
+      </Link>
+    );
+  }
+
+  return <div className="relative group">{cardContent}</div>;
 }
