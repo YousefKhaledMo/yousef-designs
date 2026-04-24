@@ -67,13 +67,11 @@ const projects: ProjectItem[] = [
 export default function Work() {
   const router = useRouter();
 
-  // Refs
   const containerRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
   const floatingImageRef = useRef<HTMLDivElement>(null);
   const itemsRef = useRef<HTMLDivElement[]>([]);
 
-  // Mouse / image animation refs
   const mouseX = useRef(-9999);
   const mouseY = useRef(-9999);
   const imageX = useRef(-9999);
@@ -82,7 +80,6 @@ export default function Work() {
   const isHovering = useRef(false);
   const rafId = useRef<number>(0);
 
-  const itemHeight = 180;
   const imageLerp = 0.12;
 
   const handleClick = useCallback(
@@ -101,36 +98,43 @@ export default function Work() {
     if (!container || !sticky || !floatingImage || items.length === 0) return;
 
     const totalItems = projects.length;
+    const viewportH = window.innerHeight;
+
+    // Each item takes ~55% of viewport so only ~2 are fully visible at once
+    const itemHeight = Math.max(340, Math.round(viewportH * 0.55));
+
     const listHeight = totalItems * itemHeight;
-    // Spacer height = viewport height + list height so user can scroll through all items
-    const spacerHeight = listHeight + window.innerHeight;
+
+    // Offset so first item starts centered vertically in the sticky viewport
+    const centerOffset = viewportH / 2 - itemHeight / 2;
+
+    // Container needs enough height to scroll through all items.
+    // Last item should reach center when scrolled to bottom.
+    const maxScroll = listHeight - itemHeight;
+    const spacerHeight = listHeight + viewportH;
     container.style.height = `${spacerHeight}px`;
 
     const handleScroll = () => {
       const rect = container.getBoundingClientRect();
-      const viewportH = window.innerHeight;
 
-      // progress: 0 when container top hits viewport top, 1 when container bottom hits viewport bottom
-      const progress = Math.max(
-        0,
-        Math.min(1, -rect.top / (rect.height - viewportH))
-      );
+      // progress: 0 at start, 1 when scrolled through entire container
+      const rawProgress = -rect.top / (rect.height - viewportH);
+      const progress = Math.max(0, Math.min(1, rawProgress));
 
-      const maxScroll = listHeight - viewportH + itemHeight;
       const currentScroll = progress * maxScroll;
       const viewportCenter = viewportH / 2;
 
       items.forEach((el, i) => {
         const baseY = i * itemHeight;
-        const translateY = baseY - currentScroll;
+        const translateY = baseY - currentScroll + centerOffset;
         const itemCenter = translateY + itemHeight / 2;
         const dist = Math.abs(itemCenter - viewportCenter);
-        const range = viewportH * 0.5;
+        const range = viewportH * 0.45; // items outside this range fade out
         const norm = Math.min(dist / range, 1);
 
-        const scale = 1 - norm * 0.15;
-        const opacity = 1 - norm * 0.7;
-        const blur = norm * 4;
+        const scale = 1 - norm * 0.2;
+        const opacity = 1 - norm * 0.85;
+        const blur = norm * 5;
 
         el.style.transform = `translateY(${translateY}px) scale(${scale}) translateZ(0)`;
         el.style.opacity = opacity.toFixed(3);
@@ -164,7 +168,7 @@ export default function Work() {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("mousemove", handleMouseMove);
-    handleScroll(); // initial position
+    handleScroll();
     rafId.current = requestAnimationFrame(animateImage);
 
     return () => {
@@ -176,7 +180,7 @@ export default function Work() {
 
   return (
     <>
-      {/* Floating Project Image (behind text, fixed globally) */}
+      {/* Floating Project Image (fixed globally) */}
       <div
         ref={floatingImageRef}
         className="fixed top-0 left-0 pointer-events-none z-0"
@@ -195,9 +199,9 @@ export default function Work() {
         }}
       />
 
-      {/* Tall scroll container — creates the scroll distance */}
+      {/* Scroll spacer — creates the scroll distance */}
       <section id="work" ref={containerRef} className="relative bg-[#0A0A0A]">
-        {/* Sticky viewport — pins to screen while scrolling through container */}
+        {/* Sticky viewport — pins to screen */}
         <div
           ref={stickyRef}
           className="sticky top-0 left-0 w-full overflow-hidden bg-[#0A0A0A]"
@@ -217,9 +221,9 @@ export default function Work() {
               }}
               className="absolute left-0 w-full flex items-center"
               style={{
-                height: `${itemHeight}px`,
-                padding: "0 5vw",
                 willChange: "transform, opacity, filter",
+                paddingLeft: "5vw",
+                paddingRight: "5vw",
               }}
             >
               <span
@@ -232,7 +236,7 @@ export default function Work() {
                 <span
                   className="font-display uppercase whitespace-nowrap cursor-pointer select-none leading-[0.9] tracking-[0.02em] text-[#F5F2ED]"
                   style={{
-                    fontSize: "clamp(64px, 10vw, 160px)",
+                    fontSize: "clamp(56px, 9vw, 140px)",
                     fontFamily: "var(--font-bebas-neue)",
                     pointerEvents: "auto",
                   }}
