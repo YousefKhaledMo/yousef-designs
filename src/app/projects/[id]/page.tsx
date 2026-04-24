@@ -19,10 +19,10 @@ const projectsData: Record<
     description:
       "A complete brand identity system for an educational platform that makes math accessible and engaging. The visual language combines bold geometric shapes with vibrant, approachable colors to create a memorable learning experience. The brand communicates confidence, clarity, and the transformative power of understanding mathematics.",
     images: [
-      "/projects/The Math Mentor covers.png",
-      "/projects/The Math Mentor Brand Guidelines.png",
-      "/projects/The Math Mentor assets.png",
-      "/projects/The Math Mentor Logs v.png",
+      "/projects/The%20Math%20Mentor%20covers.png",
+      "/projects/The%20Math%20Mentor%20Brand%20Guidelines.png",
+      "/projects/The%20Math%20Mentor%20assets.png",
+      "/projects/The%20Math%20Mentor%20Logs%20v.png",
     ],
     services: ["Brand Strategy", "Logo Design", "Visual Identity", "Brand Guidelines", "Print Design"],
   },
@@ -33,8 +33,8 @@ const projectsData: Record<
     description:
       "An all-in-one Notion template designed for teachers to manage lessons, students, attendance, payments, and tasks. The system features a dark-themed dashboard with intuitive navigation, automated workflows, and a mobile-responsive layout. Built with advanced Notion formulas and database relations for seamless productivity.",
     images: [
-      "/projects/Teacher Flow Template.png",
-      "/projects/Teacher Flow Template.png",
+      "/projects/Teacher%20Flow%20Template.png",
+      "/projects/Teacher%20Flow%20Template.png",
     ],
     services: ["Product Design", "UX Research", "Notion Development", "Dashboard Design", "Workflow Automation"],
   },
@@ -45,14 +45,14 @@ const projectsData: Record<
     description:
       "A comprehensive brand identity for a construction and engineering company. The logo mark features layered geometric forms that symbolize building foundations and structural precision. The color palette draws from industrial materials — concrete, steel, and safety orange — while maintaining a refined, professional aesthetic suitable for both digital and physical applications.",
     images: [
-      "/projects/Outline Brand Guidelines.png",
-      "/projects/Outline Brand Guidelines.png",
+      "/projects/Outline%20Brand%20Guidelines.png",
+      "/projects/Outline%20Brand%20Guidelines.png",
     ],
     services: ["Brand Strategy", "Logo Design", "Visual Identity", "Brand Guidelines", "Stationery Design"],
   },
 };
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
   return Object.keys(projectsData).map((id) => ({ id }));
 }
 
