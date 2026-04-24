@@ -66,14 +66,14 @@ const projects: ProjectItem[] = [
 
 export default function Work() {
   const router = useRouter();
-  const sectionRef = useRef<HTMLElement>(null);
-  const viewportRef = useRef<HTMLDivElement>(null);
+
+  // Refs
+  const containerRef = useRef<HTMLDivElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
   const floatingImageRef = useRef<HTMLDivElement>(null);
   const itemsRef = useRef<HTMLDivElement[]>([]);
 
-  // Animation state refs (avoid re-renders)
-  const targetScroll = useRef(0);
-  const currentScroll = useRef(0);
+  // Mouse / image animation refs
   const mouseX = useRef(-9999);
   const mouseY = useRef(-9999);
   const imageX = useRef(-9999);
@@ -83,7 +83,6 @@ export default function Work() {
   const rafId = useRef<number>(0);
 
   const itemHeight = 180;
-  const lerpFactor = 0.1;
   const imageLerp = 0.12;
 
   const handleClick = useCallback(
@@ -94,62 +93,39 @@ export default function Work() {
   );
 
   useEffect(() => {
-    const section = sectionRef.current;
-    const viewport = viewportRef.current;
+    const container = containerRef.current;
+    const sticky = stickyRef.current;
     const floatingImage = floatingImageRef.current;
     const items = itemsRef.current;
 
-    if (!section || !viewport || !floatingImage || items.length === 0) return;
+    if (!container || !sticky || !floatingImage || items.length === 0) return;
 
-    let viewportHeight = viewport.offsetHeight;
-    let viewportCenter = viewportHeight / 2;
-    const totalHeight = projects.length * itemHeight;
+    const totalItems = projects.length;
+    const listHeight = totalItems * itemHeight;
+    // Spacer height = viewport height + list height so user can scroll through all items
+    const spacerHeight = listHeight + window.innerHeight;
+    container.style.height = `${spacerHeight}px`;
 
-    const handleWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      targetScroll.current += e.deltaY;
-      const minScroll = -(viewportCenter - itemHeight / 2);
-      const maxScroll = totalHeight - viewportCenter - itemHeight / 2;
-      targetScroll.current = Math.max(
-        minScroll,
-        Math.min(targetScroll.current, maxScroll)
+    const handleScroll = () => {
+      const rect = container.getBoundingClientRect();
+      const viewportH = window.innerHeight;
+
+      // progress: 0 when container top hits viewport top, 1 when container bottom hits viewport bottom
+      const progress = Math.max(
+        0,
+        Math.min(1, -rect.top / (rect.height - viewportH))
       );
-    };
 
-    const handleResize = () => {
-      viewportHeight = viewport.offsetHeight;
-      viewportCenter = viewportHeight / 2;
-    };
+      const maxScroll = listHeight - viewportH + itemHeight;
+      const currentScroll = progress * maxScroll;
+      const viewportCenter = viewportH / 2;
 
-    const handleMouseMove = (e: MouseEvent) => {
-      if (isHovering.current) {
-        mouseX.current = e.clientX;
-        mouseY.current = e.clientY;
-      }
-    };
-
-    section.addEventListener("wheel", handleWheel, { passive: false });
-    window.addEventListener("resize", handleResize);
-    section.addEventListener("mousemove", handleMouseMove);
-
-    const animate = () => {
-      // Smooth scroll lerp
-      currentScroll.current +=
-        (targetScroll.current - currentScroll.current) * lerpFactor;
-
-      // Smooth image follow lerp
-      if (activeImageUrl.current) {
-        imageX.current += (mouseX.current - imageX.current) * imageLerp;
-        imageY.current += (mouseY.current - imageY.current) * imageLerp;
-      }
-
-      // List items: center-based interpolation for scale/opacity/blur
       items.forEach((el, i) => {
         const baseY = i * itemHeight;
-        const translateY = baseY - currentScroll.current;
+        const translateY = baseY - currentScroll;
         const itemCenter = translateY + itemHeight / 2;
         const dist = Math.abs(itemCenter - viewportCenter);
-        const range = viewportHeight * 0.5;
+        const range = viewportH * 0.5;
         const norm = Math.min(dist / range, 1);
 
         const scale = 1 - norm * 0.15;
@@ -160,9 +136,19 @@ export default function Work() {
         el.style.opacity = opacity.toFixed(3);
         el.style.filter = `blur(${blur.toFixed(1)}px)`;
       });
+    };
 
-      // Floating image update
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isHovering.current) {
+        mouseX.current = e.clientX;
+        mouseY.current = e.clientY;
+      }
+    };
+
+    const animateImage = () => {
       if (activeImageUrl.current) {
+        imageX.current += (mouseX.current - imageX.current) * imageLerp;
+        imageY.current += (mouseY.current - imageY.current) * imageLerp;
         floatingImage.style.opacity = "1";
         floatingImage.style.transform = `translate(${imageX.current.toFixed(
           1
@@ -173,28 +159,24 @@ export default function Work() {
           1
         )}px, ${imageY.current.toFixed(1)}px) translate(-50%, -50%) scale(0.95)`;
       }
-
-      rafId.current = requestAnimationFrame(animate);
+      rafId.current = requestAnimationFrame(animateImage);
     };
 
-    rafId.current = requestAnimationFrame(animate);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("mousemove", handleMouseMove);
+    handleScroll(); // initial position
+    rafId.current = requestAnimationFrame(animateImage);
 
     return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("mousemove", handleMouseMove);
       cancelAnimationFrame(rafId.current);
-      section.removeEventListener("wheel", handleWheel);
-      window.removeEventListener("resize", handleResize);
-      section.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
 
   return (
-    <section
-      id="work"
-      ref={sectionRef}
-      className="relative bg-[#0A0A0A] overflow-hidden"
-      style={{ height: "100vh", cursor: "default" }}
-    >
-      {/* Floating Project Image (behind text) */}
+    <>
+      {/* Floating Project Image (behind text, fixed globally) */}
       <div
         ref={floatingImageRef}
         className="fixed top-0 left-0 pointer-events-none z-0"
@@ -213,76 +195,79 @@ export default function Work() {
         }}
       />
 
-      {/* Section Header */}
-      <div className="absolute top-8 left-4 md:left-8 lg:left-16 z-10">
-        <EyebrowBadge variant="dark">SELECTED WORK</EyebrowBadge>
-      </div>
-
-      {/* Viewport */}
-      <div
-        ref={viewportRef}
-        className="absolute inset-0 overflow-hidden"
-        style={{ zIndex: 1 }}
-      >
-        {projects.map((project, i) => (
-          <div
-            key={`${project.index}-${i}`}
-            ref={(el) => {
-              if (el) itemsRef.current[i] = el;
-            }}
-            className="absolute left-0 w-full flex items-center"
-            style={{
-              height: `${itemHeight}px`,
-              padding: "0 5vw",
-              willChange: "transform, opacity, filter",
-            }}
-          >
-            <span
-              className="font-mono text-xs font-semibold text-[#F5F2ED]/35 tracking-[0.1em] mr-[3vw] w-10 text-right shrink-0 pointer-events-none select-none"
-              style={{ fontFamily: "var(--font-jetbrains-mono)" }}
-            >
-              {project.index}
-            </span>
-            <div className="flex flex-col">
-              <span
-                className="font-display uppercase whitespace-nowrap cursor-pointer select-none leading-[0.9] tracking-[0.02em] text-[#F5F2ED]"
-                style={{
-                  fontSize: "clamp(64px, 10vw, 160px)",
-                  fontFamily: "var(--font-bebas-neue)",
-                  pointerEvents: "auto",
-                }}
-                onMouseEnter={(e) => {
-                  isHovering.current = true;
-                  activeImageUrl.current = project.image;
-                  const rect = floatingImageRef.current;
-                  if (rect) {
-                    rect.style.backgroundImage = `url('${project.image}')`;
-                  }
-                  // Set initial mouse position
-                  mouseX.current = e.clientX;
-                  mouseY.current = e.clientY;
-                  imageX.current = e.clientX;
-                  imageY.current = e.clientY;
-                }}
-                onMouseLeave={() => {
-                  isHovering.current = false;
-                  activeImageUrl.current = null;
-                }}
-                onMouseMove={(e) => {
-                  mouseX.current = e.clientX;
-                  mouseY.current = e.clientY;
-                }}
-                onClick={() => handleClick(project.href)}
-              >
-                {project.title}
-              </span>
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#F5F2ED]/40 mt-1">
-                {project.category} — {project.year}
-              </span>
-            </div>
+      {/* Tall scroll container — creates the scroll distance */}
+      <section id="work" ref={containerRef} className="relative bg-[#0A0A0A]">
+        {/* Sticky viewport — pins to screen while scrolling through container */}
+        <div
+          ref={stickyRef}
+          className="sticky top-0 left-0 w-full overflow-hidden bg-[#0A0A0A]"
+          style={{ height: "100vh", zIndex: 1 }}
+        >
+          {/* Section Header */}
+          <div className="absolute top-8 left-4 md:left-8 lg:left-16 z-10">
+            <EyebrowBadge variant="dark">SELECTED WORK</EyebrowBadge>
           </div>
-        ))}
-      </div>
-    </section>
+
+          {/* Kinetic list items */}
+          {projects.map((project, i) => (
+            <div
+              key={`${project.index}-${i}`}
+              ref={(el) => {
+                if (el) itemsRef.current[i] = el;
+              }}
+              className="absolute left-0 w-full flex items-center"
+              style={{
+                height: `${itemHeight}px`,
+                padding: "0 5vw",
+                willChange: "transform, opacity, filter",
+              }}
+            >
+              <span
+                className="font-mono text-xs font-semibold text-[#F5F2ED]/35 tracking-[0.1em] mr-[3vw] w-10 text-right shrink-0 pointer-events-none select-none"
+                style={{ fontFamily: "var(--font-jetbrains-mono)" }}
+              >
+                {project.index}
+              </span>
+              <div className="flex flex-col">
+                <span
+                  className="font-display uppercase whitespace-nowrap cursor-pointer select-none leading-[0.9] tracking-[0.02em] text-[#F5F2ED]"
+                  style={{
+                    fontSize: "clamp(64px, 10vw, 160px)",
+                    fontFamily: "var(--font-bebas-neue)",
+                    pointerEvents: "auto",
+                  }}
+                  onMouseEnter={(e) => {
+                    isHovering.current = true;
+                    activeImageUrl.current = project.image;
+                    const rect = floatingImageRef.current;
+                    if (rect) {
+                      rect.style.backgroundImage = `url('${project.image}')`;
+                    }
+                    mouseX.current = e.clientX;
+                    mouseY.current = e.clientY;
+                    imageX.current = e.clientX;
+                    imageY.current = e.clientY;
+                  }}
+                  onMouseLeave={() => {
+                    isHovering.current = false;
+                    activeImageUrl.current = null;
+                  }}
+                  onMouseMove={(e) => {
+                    mouseX.current = e.clientX;
+                    mouseY.current = e.clientY;
+                  }}
+                  onClick={() => handleClick(project.href)}
+                >
+                  {project.title}
+                </span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#F5F2ED]/40 mt-1">
+                  {project.category} — {project.year}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </>
   );
 }
