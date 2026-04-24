@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useCallback } from "react";
+import { motion, useInView } from "framer-motion";
 import { useRouter } from "next/navigation";
 import EyebrowBadge from "./EyebrowBadge";
 
@@ -38,40 +39,37 @@ const projects: ProjectItem[] = [
     category: "Brand Identity",
     year: "2023",
   },
-  {
-    title: "The Math Mentor",
-    index: "04",
-    image: "/projects/The%20Math%20Mentor%20Brand%20Guidelines.png",
-    href: "/projects/math-mentor/",
-    category: "Brand Identity",
-    year: "2025",
-  },
-  {
-    title: "Teacher Flow",
-    index: "05",
-    image: "/projects/Teacher%20Flow%20Template.png",
-    href: "/projects/teacher-flow/",
-    category: "Product Design",
-    year: "2025",
-  },
-  {
-    title: "Outline",
-    index: "06",
-    image: "/projects/Outline%20Brand%20Guidelines.png",
-    href: "/projects/outline/",
-    category: "Brand Identity",
-    year: "2023",
-  },
 ];
+
+const primaryEase: [number, number, number, number] = [0.32, 0.72, 0, 1];
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.9,
+      ease: primaryEase,
+    },
+  },
+};
 
 export default function Work() {
   const router = useRouter();
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
 
-  const containerRef = useRef<HTMLDivElement>(null);
-  const stickyRef = useRef<HTMLDivElement>(null);
   const floatingImageRef = useRef<HTMLDivElement>(null);
-  const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
-
   const mouseX = useRef(-9999);
   const mouseY = useRef(-9999);
   const imageX = useRef(-9999);
@@ -90,47 +88,8 @@ export default function Work() {
   );
 
   useEffect(() => {
-    const container = containerRef.current;
     const floatingImage = floatingImageRef.current;
-
-    if (!container || !floatingImage) return;
-
-    const totalItems = projects.length;
-    const viewportH = window.innerHeight;
-    const itemHeight = Math.round(viewportH * 0.4);
-    const listHeight = totalItems * itemHeight;
-    const maxScroll = listHeight - itemHeight;
-
-    // Container exactly matches listHeight — no gaps, no overshoot
-    container.style.height = `${listHeight}px`;
-
-    const handleScroll = () => {
-      const items: HTMLDivElement[] = itemsRef.current.filter(Boolean) as HTMLDivElement[];
-      if (items.length === 0) return;
-
-      const rect = container.getBoundingClientRect();
-      const rawProgress = -rect.top / (rect.height - viewportH);
-      const progress = Math.max(0, Math.min(1, rawProgress));
-      const currentScroll = progress * maxScroll;
-      const viewportCenter = viewportH / 2;
-
-      items.forEach((el, i) => {
-        const baseY = i * itemHeight;
-        const translateY = baseY - currentScroll;
-        const itemCenter = translateY + itemHeight / 2;
-        const dist = Math.abs(itemCenter - viewportCenter);
-        const range = viewportH * 0.45;
-        const norm = Math.min(dist / range, 1);
-
-        const scale = 1 - norm * 0.2;
-        const opacity = 1 - norm * 0.85;
-        const blur = norm * 5;
-
-        el.style.transform = `translateY(${translateY}px) scale(${scale}) translateZ(0)`;
-        el.style.opacity = opacity.toFixed(3);
-        el.style.filter = `blur(${blur.toFixed(1)}px)`;
-      });
-    };
+    if (!floatingImage) return;
 
     const handleMouseMove = (e: MouseEvent) => {
       if (isHovering.current) {
@@ -152,17 +111,11 @@ export default function Work() {
       rafId.current = requestAnimationFrame(animateImage);
     };
 
-    const scrollHandler = handleScroll;
-    const mouseHandler = handleMouseMove;
-
-    window.addEventListener("scroll", scrollHandler, { passive: true });
-    window.addEventListener("mousemove", mouseHandler);
-    handleScroll();
+    window.addEventListener("mousemove", handleMouseMove);
     rafId.current = requestAnimationFrame(animateImage);
 
     return () => {
-      window.removeEventListener("scroll", scrollHandler);
-      window.removeEventListener("mousemove", mouseHandler);
+      window.removeEventListener("mousemove", handleMouseMove);
       cancelAnimationFrame(rafId.current);
     };
   }, []);
@@ -173,10 +126,10 @@ export default function Work() {
         ref={floatingImageRef}
         className="fixed top-0 left-0 pointer-events-none z-0"
         style={{
-          width: "34vw",
-          height: "24vw",
-          maxWidth: "520px",
-          maxHeight: "360px",
+          width: "28vw",
+          height: "18vw",
+          maxWidth: "420px",
+          maxHeight: "280px",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -187,70 +140,70 @@ export default function Work() {
         }}
       />
 
-      <section id="work" ref={containerRef} className="relative bg-[#0A0A0A]">
-        <div
-          ref={stickyRef}
-          className="sticky top-0 left-0 w-full overflow-hidden bg-[#0A0A0A]"
-          style={{ height: "100vh", zIndex: 1 }}
-        >
-          <div className="absolute top-8 left-4 md:left-8 lg:left-16 z-10">
-            <EyebrowBadge variant="dark">SELECTED WORK</EyebrowBadge>
-          </div>
+      <section
+        id="work"
+        ref={sectionRef}
+        className="relative min-h-[100dvh] bg-[#0A0A0A] flex flex-col justify-center px-4 md:px-8 lg:px-16"
+      >
+        <div className="absolute top-8 left-4 md:left-8 lg:left-16 z-10">
+          <EyebrowBadge variant="dark">SELECTED WORK</EyebrowBadge>
+        </div>
 
-          {projects.map((project, i) => (
-            <div
-              key={`${project.index}-${i}`}
-              ref={(el) => { itemsRef.current[i] = el; }}
-              className="absolute left-0 w-full flex items-center"
-              style={{
-                willChange: "transform, opacity, filter",
-                paddingLeft: "5vw",
-                paddingRight: "5vw",
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          className="relative z-10 w-full max-w-[1400px] mx-auto pt-20"
+        >
+          {projects.map((project) => (
+            <motion.div
+              key={project.index}
+              variants={itemVariants}
+              className="group flex items-baseline gap-4 md:gap-8 py-5 md:py-8 border-b border-[#F5F2ED]/10 cursor-pointer"
+              onClick={() => handleClick(project.href)}
+              onMouseEnter={(e) => {
+                isHovering.current = true;
+                activeImageUrl.current = project.image;
+                const rect = floatingImageRef.current;
+                if (rect) rect.style.backgroundImage = `url('${project.image}')`;
+                mouseX.current = e.clientX;
+                mouseY.current = e.clientY;
+                imageX.current = e.clientX;
+                imageY.current = e.clientY;
+              }}
+              onMouseLeave={() => {
+                isHovering.current = false;
+                activeImageUrl.current = null;
+              }}
+              onMouseMove={(e) => {
+                mouseX.current = e.clientX;
+                mouseY.current = e.clientY;
               }}
             >
               <span
-                className="font-mono text-xs font-semibold text-[#F5F2ED]/35 tracking-[0.1em] mr-[3vw] w-10 text-right shrink-0 pointer-events-none select-none"
+                className="font-mono text-xs font-semibold text-[#F5F2ED]/35 tracking-[0.1em] w-10 text-right shrink-0 pointer-events-none select-none"
                 style={{ fontFamily: "var(--font-jetbrains-mono)" }}
               >
                 {project.index}
               </span>
-              <div className="flex flex-col">
+              <div className="flex flex-col md:flex-row md:items-baseline md:justify-between flex-1 gap-1 md:gap-0">
                 <span
-                  className="font-display uppercase whitespace-nowrap cursor-pointer select-none leading-[0.9] tracking-[0.02em] text-[#F5F2ED]"
+                  className="font-display uppercase whitespace-nowrap text-[#F5F2ED] leading-[0.95] tracking-[0.02em] transition-colors duration-300 group-hover:text-[#FF4D2E]"
                   style={{
-                    fontSize: "clamp(56px, 9vw, 140px)",
+                    fontSize: "clamp(48px, 8vw, 120px)",
                     fontFamily: "var(--font-bebas-neue)",
                     pointerEvents: "auto",
                   }}
-                  onMouseEnter={(e) => {
-                    isHovering.current = true;
-                    activeImageUrl.current = project.image;
-                    const rect = floatingImageRef.current;
-                    if (rect) rect.style.backgroundImage = `url('${project.image}')`;
-                    mouseX.current = e.clientX;
-                    mouseY.current = e.clientY;
-                    imageX.current = e.clientX;
-                    imageY.current = e.clientY;
-                  }}
-                  onMouseLeave={() => {
-                    isHovering.current = false;
-                    activeImageUrl.current = null;
-                  }}
-                  onMouseMove={(e) => {
-                    mouseX.current = e.clientX;
-                    mouseY.current = e.clientY;
-                  }}
-                  onClick={() => handleClick(project.href)}
                 >
                   {project.title}
                 </span>
-                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#F5F2ED]/40 mt-1">
+                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#F5F2ED]/40 md:text-right shrink-0">
                   {project.category} — {project.year}
                 </span>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
     </>
   );
