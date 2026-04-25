@@ -15,7 +15,7 @@ export default function EyebrowBadge({
 }: EyebrowBadgeProps) {
   return (
     <span
-      className={`inline-flex rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.2em] font-mono ${variantStyles[variant]}`}
+      className={`inline-flex rounded-full px-3 py-1 text-[0.625rem] uppercase tracking-[0.2em] font-mono ${variantStyles[variant]}`}
     >
       {children}
     </span>

@@ -31,6 +31,7 @@ export default function ProjectCard({
               src={image}
               alt={title}
               fill
+              loading="lazy"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover grayscale brightness-90 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-[1.05]"
             />
@@ -55,7 +56,7 @@ export default function ProjectCard({
       </span>
 
       {/* Year */}
-      <span className="absolute bottom-6 right-6 font-mono text-xs text-text-muted-light z-10 pointer-events-none">
+      <span className="absolute bottom-6 right-6 font-mono text-xs text-text-primary-light/60 z-10 pointer-events-none">
         {year}
       </span>
     </>

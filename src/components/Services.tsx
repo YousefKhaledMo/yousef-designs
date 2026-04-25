@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight } from "@phosphor-icons/react";
 
@@ -149,6 +149,7 @@ function ServiceShape({ shape }: { shape: string }) {
 export default function Services() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <section
@@ -157,18 +158,20 @@ export default function Services() {
       className="bg-[#E8E4DE]"
     >
       {/* Service Blocks */}
-      <div className="py-32 md:py-40 px-4 md:px-8 lg:px-16">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="max-w-[1400px] mx-auto"
-        >
+      <div className="py-16 md:py-24 px-4 md:px-8 lg:px-16">
+          <motion.div
+            variants={containerVariants}
+            initial={prefersReducedMotion ? "visible" : "hidden"}
+            animate={isInView ? "visible" : prefersReducedMotion ? "visible" : "hidden"}
+            className="max-w-[1400px] mx-auto"
+          >
           {services.map((service) => (
             <motion.div
               key={service.id}
               variants={itemVariants}
-              className="group relative flex flex-col md:flex-row md:items-center md:justify-between py-16 md:py-32 first:pt-0 last:pb-0"
+              initial={prefersReducedMotion ? { opacity: 1, y: 0 } : "hidden"}
+              animate={prefersReducedMotion ? { opacity: 1, y: 0 } : "visible"}
+              className="group relative flex flex-col md:flex-row md:items-center md:justify-between py-8 md:py-14 first:pt-0 last:pb-0"
             >
               {/* Text Content ~70% */}
               <div className="md:w-[70%] md:pr-12">
@@ -197,22 +200,22 @@ export default function Services() {
       </div>
 
       {/* CTA Block */}
-      <div className="bg-[#0A0A0A] py-24 px-4 md:px-8">
+      <div className="bg-[#0A0A0A] py-16 px-4 md:px-8">
         <div className="max-w-[1400px] mx-auto flex flex-col items-center text-center">
-          <p className="font-[family-name:var(--font-sora)] text-[clamp(1.5rem,3vw,2.5rem)] text-[#F5F2ED] leading-snug max-w-[35ch]">
+          <p className="font-[family-name:var(--font-sora)] text-[clamp(1.5rem,3vw,2.5rem)] text-text-primary-light leading-snug max-w-[35ch]">
             Got a project that scares other designers? That&apos;s my sweet spot.
           </p>
 
           <a
             href="mailto:youseefkhald@gmail.com"
-            className="group mt-10 inline-flex items-center gap-3 rounded-full bg-white/5 border border-white/10 px-6 py-3 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:scale-105"
+            className="group mt-10 inline-flex items-center gap-3 rounded-full bg-white/5 border border-white/10 px-6 py-3 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
           >
-            <span className="font-[family-name:var(--font-sora)] text-sm text-[#F5F2ED]">
+            <span className="font-[family-name:var(--font-sora)] text-sm text-text-primary-light">
               Start a Conversation
             </span>
             <span className="relative flex items-center justify-center w-8 h-8 rounded-full bg-white/10 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
               <ArrowRight
-                className="w-4 h-4 text-[#F5F2ED]"
+                className="w-4 h-4 text-text-primary-light"
                 weight="bold"
               />
             </span>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
 const navLinks = [
@@ -33,33 +33,35 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLightSection, setIsLightSection] = useState(false);
   const shouldReduceMotion = useReducedMotion() ?? false;
+  const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   const toggleMenu = () => setIsOpen((prev) => !prev);
   const closeMenu = () => setIsOpen(false);
 
   // Detect scroll position to switch navbar style
   useEffect(() => {
-    const handleScroll = () => {
-      const aboutSection = document.getElementById("about");
-      const servicesSection = document.getElementById("services");
-      const scrollY = window.scrollY + 100;
+    const aboutSection = document.getElementById("about");
+    const servicesSection = document.getElementById("services");
 
-      const inAbout =
-        aboutSection != null &&
-        scrollY >= aboutSection.offsetTop &&
-        scrollY < aboutSection.offsetTop + aboutSection.offsetHeight;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const anyIntersecting = entries.some((entry) => entry.isIntersecting);
+        setIsLightSection(anyIntersecting);
+      },
+      {
+        rootMargin: "-100px 0px 0px 0px",
+        threshold: 0,
+      }
+    );
 
-      const inServices =
-        servicesSection != null &&
-        scrollY >= servicesSection.offsetTop &&
-        scrollY < servicesSection.offsetTop + servicesSection.offsetHeight;
+    if (aboutSection) observer.observe(aboutSection);
+    if (servicesSection) observer.observe(servicesSection);
 
-      setIsLightSection(inAbout || inServices);
+    return () => {
+      if (aboutSection) observer.unobserve(aboutSection);
+      if (servicesSection) observer.unobserve(servicesSection);
+      observer.disconnect();
     };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Escape key handler
@@ -84,6 +86,39 @@ export default function Navbar() {
       document.body.style.overflow = "";
     };
   }, [isOpen]);
+
+  // Focus trap for mobile menu
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const focusTimer = setTimeout(() => {
+      linkRefs.current[0]?.focus();
+    }, shouldReduceMotion ? 0 : 100);
+
+    const handleTabKey = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+
+      const focusables = linkRefs.current.filter(Boolean) as HTMLAnchorElement[];
+      if (focusables.length === 0) return;
+
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    window.addEventListener("keydown", handleTabKey);
+    return () => {
+      clearTimeout(focusTimer);
+      window.removeEventListener("keydown", handleTabKey);
+    };
+  }, [isOpen, shouldReduceMotion]);
 
   const handleLinkClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -131,7 +166,7 @@ export default function Navbar() {
           <a
             href="#"
             onClick={(e) => handleLinkClick(e, "#")}
-            className="font-display text-sm tracking-[0.15em] text-text-primary-light uppercase select-none"
+            className="font-display text-sm tracking-[0.15em] text-text-primary-light uppercase select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary rounded-sm"
           >
             Yousef
           </a>
@@ -143,7 +178,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={(e) => handleLinkClick(e, link.href)}
-                className="font-body text-xs uppercase tracking-[0.1em] text-text-primary-light/80 hover:text-text-primary-light transition-colors"
+                className="font-body text-xs uppercase tracking-[0.1em] text-text-primary-light/80 hover:text-text-primary-light transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary rounded-sm"
                 style={{
                   transitionDuration: shouldReduceMotion ? "0ms" : "300ms",
                   transitionTimingFunction: "cubic-bezier(0.32, 0.72, 0, 1)",
@@ -157,26 +192,28 @@ export default function Navbar() {
           {/* Mobile Hamburger */}
           <button
             onClick={toggleMenu}
-            className="md:hidden relative w-6 h-5 flex items-center justify-center"
+            className="md:hidden relative w-11 h-11 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary rounded-full"
             aria-label={isOpen ? "Close menu" : "Open menu"}
             aria-expanded={isOpen}
           >
-            <motion.span
-              className="absolute w-full h-[1.5px] bg-text-primary-light origin-center"
-              animate={{
-                y: isOpen ? 0 : -6,
-                rotate: isOpen ? 45 : 0,
-              }}
-              transition={transition}
-            />
-            <motion.span
-              className="absolute w-full h-[1.5px] bg-text-primary-light origin-center"
-              animate={{
-                y: isOpen ? 0 : 6,
-                rotate: isOpen ? -45 : 0,
-              }}
-              transition={transition}
-            />
+            <div className="relative w-6 h-5 flex items-center justify-center">
+              <motion.span
+                className="absolute w-full h-[1.5px] bg-text-primary-light origin-center"
+                animate={{
+                  y: isOpen ? 0 : -6,
+                  rotate: isOpen ? 45 : 0,
+                }}
+                transition={transition}
+              />
+              <motion.span
+                className="absolute w-full h-[1.5px] bg-text-primary-light origin-center"
+                animate={{
+                  y: isOpen ? 0 : 6,
+                  rotate: isOpen ? -45 : 0,
+                }}
+                transition={transition}
+              />
+            </div>
           </button>
         </motion.div>
       </nav>
@@ -201,12 +238,13 @@ export default function Navbar() {
               exit="hidden"
               onClick={(e) => e.stopPropagation()}
             >
-              {navLinks.map((link) => (
+              {navLinks.map((link, index) => (
                 <motion.a
                   key={link.href}
+                  ref={(el) => { linkRefs.current[index] = el; }}
                   href={link.href}
                   onClick={(e) => handleLinkClick(e, link.href)}
-                  className="font-display text-5xl uppercase tracking-[0.05em] text-text-primary-light hover:text-accent transition-colors"
+                  className="font-display text-5xl uppercase tracking-[0.05em] text-text-primary-light hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary rounded-sm"
                   style={{
                     transitionDuration: shouldReduceMotion ? "0ms" : "300ms",
                     transitionTimingFunction:

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
+import EyebrowBadge from "@/components/EyebrowBadge";
 
 interface ProjectPageProps {
   title: string;
@@ -20,20 +21,20 @@ export default function ProjectPage({
   services,
 }: ProjectPageProps) {
   return (
-    <main className="min-h-screen bg-[#0A0A0A]">
+    <main className="min-h-screen bg-bg-primary">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 px-4 md:px-8 py-6">
         <div className="max-w-[1400px] mx-auto flex items-center justify-between">
           <Link
             href="/"
-            className="flex items-center gap-2 text-[#F5F2ED]/80 hover:text-[#F5F2ED] transition-colors duration-300"
+            className="flex items-center gap-2 text-text-primary-light/80 hover:text-text-primary-light transition-colors duration-300"
           >
             <ArrowLeft className="w-4 h-4" />
             <span className="font-body text-sm uppercase tracking-[0.1em]">
               Back to Work
             </span>
           </Link>
-          <span className="font-mono text-xs text-[#F5F2ED]/50">
+          <span className="font-mono text-xs text-text-primary-light/60">
             {year}
           </span>
         </div>
@@ -42,13 +43,11 @@ export default function ProjectPage({
       {/* Hero */}
       <section className="pt-32 pb-16 md:pt-40 md:pb-24 px-4 md:px-8 lg:px-16">
         <div className="max-w-[1400px] mx-auto">
-          <span className="inline-flex rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.2em] font-mono bg-[#0A0A0A] text-[#F5F2ED] border border-[#F5F2ED]/10">
-            {category}
-          </span>
-          <h1 className="mt-6 font-display text-[clamp(3rem,10vw,8rem)] leading-[0.9] text-[#F5F2ED] uppercase">
+          <EyebrowBadge variant="dark">{category}</EyebrowBadge>
+          <h1 className="mt-6 font-display text-[clamp(3rem,10vw,8rem)] leading-[0.9] text-text-primary-light uppercase">
             {title}
           </h1>
-          <p className="mt-8 max-w-2xl font-body text-lg md:text-xl leading-relaxed text-[#F5F2ED]/70">
+          <p className="mt-8 max-w-2xl font-body text-lg md:text-xl leading-relaxed text-text-primary-light/70">
             {description}
           </p>
         </div>
@@ -74,14 +73,14 @@ export default function ProjectPage({
       <section className="py-16 md:py-24 px-4 md:px-8 lg:px-16">
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
           <div>
-            <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-[#F5F2ED]/50 mb-4">
+            <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-text-primary-light/60 mb-4">
               Services
             </h3>
             <ul className="space-y-2">
               {services.map((service) => (
                 <li
                   key={service}
-                  className="font-body text-[#F5F2ED]/80"
+                  className="font-body text-text-primary-light/80"
                 >
                   {service}
                 </li>
@@ -89,16 +88,16 @@ export default function ProjectPage({
             </ul>
           </div>
           <div>
-            <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-[#F5F2ED]/50 mb-4">
+            <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-text-primary-light/60 mb-4">
               Year
             </h3>
-            <p className="font-body text-[#F5F2ED]/80">{year}</p>
+            <p className="font-body text-text-primary-light/80">{year}</p>
           </div>
           <div>
-            <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-[#F5F2ED]/50 mb-4">
+            <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-text-primary-light/60 mb-4">
               Category
             </h3>
-            <p className="font-body text-[#F5F2ED]/80">{category}</p>
+            <p className="font-body text-text-primary-light/80">{category}</p>
           </div>
         </div>
       </section>
@@ -115,6 +114,7 @@ export default function ProjectPage({
                 src={image}
                 alt={`${title} - Image ${index + 2}`}
                 fill
+                loading="lazy"
                 className="object-cover"
                 sizes="100vw"
               />
@@ -124,14 +124,14 @@ export default function ProjectPage({
       </section>
 
       {/* Next Project CTA */}
-      <section className="py-24 px-4 md:px-8 lg:px-16 border-t border-white/10">
+      <section className="py-24 px-4 md:px-8 lg:px-16 border-t border-border-light">
         <div className="max-w-[1400px] mx-auto text-center">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#F5F2ED]/50 mb-4">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-text-primary-light/60 mb-4">
             Interested?
           </p>
           <a
             href="mailto:youseefkhald@gmail.com"
-            className="inline-flex items-center gap-3 font-display text-3xl md:text-5xl text-[#F5F2ED] hover:text-[#FF4D2E] transition-colors duration-300"
+            className="inline-flex items-center gap-3 font-display text-3xl md:text-5xl text-text-primary-light hover:text-accent transition-colors duration-300"
           >
             Start a Conversation
             <span className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 flex items-center justify-center">
