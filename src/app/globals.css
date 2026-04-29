@@ -19,11 +19,14 @@
   --color-bg-primary: #0A0A0A;
   --color-bg-secondary: #F5F2ED;
   --color-bg-tertiary: #E8E4DE;
+  --color-bg-dark: #141414;
   --color-text-primary-dark: #0A0A0A;
   --color-text-primary-light: #F5F2ED;
   --color-text-muted-dark: rgba(10,10,10,0.5);
   --color-text-muted-light: rgba(245,242,237,0.5);
   --color-accent: #FF4D2E;
+  --color-white: #FFFFFF;
+  --color-black: #000000;
   --color-border-light: rgba(245,242,237,0.08);
   --color-border-dark: rgba(10,10,10,0.08);
 
@@ -60,6 +63,29 @@ body {
   font-family: var(--font-body), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Skip link for keyboard navigation */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary-light);
+  padding: 12px 24px;
+  border-radius: 0 0 8px 8px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  z-index: 10000;
+  transition: top 0.2s ease;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 /* Custom scrollbar */
@@ -252,6 +278,22 @@ body {
   /* Disable scroll-driven animations gracefully */
   .scroll-animate {
     opacity: 1 !important;
+    transform: none !important;
+  }
+  
+  /* Hide animated elements that rely on motion */
+  .cursor {
+    display: none;
+  }
+  
+  .grain-overlay::before {
+    animation: none;
+    opacity: 0;
+  }
+  
+  /* Disable parallax effects */
+  [style*="parallax"],
+  [style*="will-change: transform"] {
     transform: none !important;
   }
 }

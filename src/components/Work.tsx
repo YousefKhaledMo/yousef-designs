@@ -193,7 +193,7 @@ export default function Work() {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          backgroundColor: "#141414",
+          backgroundColor: "var(--color-bg-dark)",
           borderRadius: "8px",
           zIndex: 5,
           willChange: "transform, opacity",
@@ -281,7 +281,7 @@ export default function Work() {
                       className={`inline-block ${wordIndex > 0 ? "ml-2 md:ml-4" : ""}`}
                       style={{ color: "inherit" }}
                       animate={activeProject === project.title ? {
-                        color: "#FF4D2E",
+                        color: "var(--color-accent)",
                         transition: { type: "spring", stiffness: 400, damping: 25 },
                       } : {}}
                     >

@@ -9,7 +9,7 @@ import CustomCursor from "@/components/CustomCursor";
 
 export default function Home() {
   return (
-    <main className="relative">
+    <main id="main-content" className="relative">
       {/* Scroll progress indicator */}
       <ScrollProgress />
       

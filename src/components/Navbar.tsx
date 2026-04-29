@@ -291,7 +291,7 @@ export default function Navbar() {
                   transition={linkTransition}
                   whileHover={shouldReduceMotion ? {} : {
                     x: 20,
-                    color: "#FF4D2E",
+                    color: "var(--color-accent)",
                     transition: { type: "spring", stiffness: 400, damping: 20 },
                   }}
                   whileTap={shouldReduceMotion ? {} : {

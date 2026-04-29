@@ -79,7 +79,7 @@ function WireframeCube() {
       >
         {/* Front */}
         <motion.div
-          className="absolute inset-0 border border-[#0A0A0A]/15"
+          className="absolute inset-0 border border-[text-primary-dark]/15"
           style={{ transform: "translateZ(48px)" }}
           whileHover={prefersReducedMotion ? {} : {
             borderColor: "rgba(255, 77, 46, 0.3)",
@@ -89,27 +89,27 @@ function WireframeCube() {
         />
         {/* Back */}
         <div
-          className="absolute inset-0 border border-[#0A0A0A]/15"
+          className="absolute inset-0 border border-[text-primary-dark]/15"
           style={{ transform: "translateZ(-48px) rotateY(180deg)" }}
         />
         {/* Left */}
         <div
-          className="absolute inset-0 border border-[#0A0A0A]/15"
+          className="absolute inset-0 border border-[text-primary-dark]/15"
           style={{ transform: "translateX(-48px) rotateY(-90deg)" }}
         />
         {/* Right */}
         <div
-          className="absolute inset-0 border border-[#0A0A0A]/15"
+          className="absolute inset-0 border border-[text-primary-dark]/15"
           style={{ transform: "translateX(48px) rotateY(90deg)" }}
         />
         {/* Top */}
         <div
-          className="absolute inset-0 border border-[#0A0A0A]/15"
+          className="absolute inset-0 border border-[text-primary-dark]/15"
           style={{ transform: "translateY(-48px) rotateX(90deg)" }}
         />
         {/* Bottom */}
         <div
-          className="absolute inset-0 border border-[#0A0A0A]/15"
+          className="absolute inset-0 border border-[text-primary-dark]/15"
           style={{ transform: "translateY(48px) rotateX(-90deg)" }}
         />
       </motion.div>
@@ -133,7 +133,7 @@ function GlyphB() {
       }}
     >
       <span
-        className="font-[family-name:var(--font-bebas-neue)] text-[clamp(4rem,10vw,8rem)] leading-none text-[#0A0A0A]/15 select-none"
+        className="font-[family-name:var(--font-bebas-neue)] text-[clamp(4rem,10vw,8rem)] leading-none text-[text-primary-dark]/15 select-none"
       >
         B
       </span>
@@ -178,7 +178,7 @@ function CursorArrow() {
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="text-[#0A0A0A]/15"
+        className="text-[text-primary-dark]/15"
       >
         <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z" />
       </svg>
@@ -206,7 +206,7 @@ function CursorArrow() {
             fill="none"
             stroke="currentColor"
             strokeWidth="1"
-            className="text-[#0A0A0A]/10"
+            className="text-[text-primary-dark]/10"
           >
             <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z" />
           </svg>
@@ -291,7 +291,7 @@ function MagneticCTA({ href, children }: { href: string; children: React.ReactNo
         {children}
       </span>
       <motion.span 
-        className="relative flex items-center justify-center w-8 h-8 rounded-full bg-white/10"
+        className="relative flex items-center justify-center w-11 h-11 rounded-full bg-white/10"
         animate={isHovered && !prefersReducedMotion ? {
           x: 2,
           y: -2,
@@ -316,7 +316,7 @@ export default function Services() {
     <section
       id="services"
       ref={sectionRef}
-      className="bg-[#E8E4DE]"
+      className="bg-[bg-bg-tertiary]"
     >
       {/* Service Blocks */}
       <div className="py-16 md:py-24 px-4 md:px-8 lg:px-16">
@@ -339,7 +339,7 @@ export default function Services() {
                 {/* Title with magnetic shift effect */}
                 <div className="relative inline-block overflow-visible">
                   <motion.h3
-                    className="font-[family-name:var(--font-bebas-neue)] text-[clamp(3rem,8vw,8rem)] leading-[1.0] text-[#0A0A0A]"
+                    className="font-[family-name:var(--font-bebas-neue)] text-[clamp(3rem,8vw,8rem)] leading-[1.0] text-[text-primary-dark]"
                     whileHover={prefersReducedMotion ? {} : {
                       x: 12,
                       transition: { type: "spring", stiffness: 400, damping: 20 },
@@ -350,14 +350,14 @@ export default function Services() {
                   
                   {/* Magnetic line underline */}
                   <motion.div
-                    className="mt-2 h-[2px] bg-[#0A0A0A] origin-left"
+                    className="mt-2 h-[2px] bg-[text-primary-dark] origin-left"
                     initial={{ scaleX: 0 }}
                     whileInView={{ scaleX: 1 }}
                     viewport={{ once: true }}
                     transition={{ ...springs.bouncy, delay: 0.2 }}
                     whileHover={prefersReducedMotion ? {} : {
                       scaleX: 1.1,
-                      backgroundColor: "#FF4D2E",
+                      backgroundColor: "var(--color-accent)",
                       transition: { type: "spring", stiffness: 400, damping: 20 },
                     }}
                   />
@@ -365,7 +365,7 @@ export default function Services() {
 
                 {/* Description */}
                 <motion.p
-                  className="font-[family-name:var(--font-sora)] text-[clamp(1rem,1.5vw,1.25rem)] text-[#0A0A0A]/70 max-w-[50ch] mt-6 leading-relaxed"
+                  className="font-[family-name:var(--font-sora)] text-[clamp(1rem,1.5vw,1.25rem)] text-[text-primary-dark]/70 max-w-[50ch] mt-6 leading-relaxed"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -392,7 +392,7 @@ export default function Services() {
 
       {/* CTA Block */}
       <motion.div
-        className="bg-[#0A0A0A] py-16 px-4 md:px-8"
+        className="bg-[text-primary-dark] py-16 px-4 md:px-8"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}

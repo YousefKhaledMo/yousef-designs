@@ -108,7 +108,7 @@ export default function Footer() {
           className="font-display text-[clamp(2rem,5vw,4rem)] text-text-primary-light/80 text-center mt-8"
           whileHover={prefersReducedMotion ? {} : {
             y: -5,
-            color: "#FF4D2E",
+            color: "var(--color-accent)",
             transition: { type: "spring", stiffness: 400, damping: 20 },
           }}
         >
@@ -127,7 +127,7 @@ export default function Footer() {
             className="font-mono text-lg text-text-primary-light no-underline"
             whileHover={prefersReducedMotion ? {} : {
               y: -3,
-              color: "#FF4D2E",
+              color: "var(--color-accent)",
               transition: { type: "spring", stiffness: 400, damping: 20 },
             }}
           >
@@ -149,7 +149,7 @@ export default function Footer() {
             className="font-mono text-sm text-text-primary-light/60 no-underline"
             whileHover={prefersReducedMotion ? {} : {
               y: -3,
-              color: "#FF4D2E",
+              color: "var(--color-accent)",
               transition: { type: "spring", stiffness: 400, damping: 20 },
             }}
           >
@@ -269,7 +269,7 @@ export default function Footer() {
       
       {/* Decorative gradient orb */}
       <motion.div
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full blur-[150px] pointer-events-none"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full blur-[100px] pointer-events-none"
         style={{
           background: "radial-gradient(circle, rgba(255,77,46,0.08) 0%, transparent 70%)",
         }}

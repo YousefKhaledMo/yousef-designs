@@ -167,7 +167,7 @@ export default function Hero() {
         {/* Parallax orbs */}
         <motion.div
           ref={orbARef}
-          className="absolute w-[600px] h-[600px] rounded-full -top-40 -left-40 blur-[120px]"
+          className="absolute w-[600px] h-[600px] rounded-full -top-40 -left-40 blur-[80px]"
           style={{ y: orb1Y }}
           animate={prefersReducedMotion ? {} : {
             x: [0, 30, -20, 0],
@@ -191,7 +191,7 @@ export default function Hero() {
         
         <motion.div
           ref={orbBRef}
-          className="absolute w-[500px] h-[500px] rounded-full -bottom-32 -right-32 blur-[100px]"
+          className="absolute w-[500px] h-[500px] rounded-full -bottom-32 -right-32 blur-[60px]"
           style={{ y: orb2Y }}
           animate={prefersReducedMotion ? {} : {
             x: [0, -40, 30, 0],
@@ -216,7 +216,7 @@ export default function Hero() {
         
         <motion.div
           ref={orbCRef}
-          className="absolute w-[350px] h-[350px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 blur-[80px]"
+          className="absolute w-[350px] h-[350px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 blur-[50px]"
           style={{ y: orb3Y }}
           animate={prefersReducedMotion ? {} : {
             scale: [1, 1.1, 0.9, 1],
@@ -365,7 +365,7 @@ export default function Hero() {
             Explore Work
           </span>
           <motion.span 
-            className="relative flex items-center justify-center w-8 h-8 rounded-full bg-white/10"
+            className="relative flex items-center justify-center w-11 h-11 rounded-full bg-white/10"
             whileHover={prefersReducedMotion ? {} : {
               x: 2,
               y: -2,

@@ -61,7 +61,16 @@ export default function RootLayout({
       lang="en"
       className={`${bebasNeue.variable} ${sora.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {/* Skip link for keyboard navigation */}
+        <a
+          href="#main-content"
+          className="skip-link"
+        >
+          Skip to main content
+        </a>
+        {children}
+      </body>
     </html>
   );
 }
