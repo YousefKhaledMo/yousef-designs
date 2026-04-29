@@ -1,6 +1,21 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════
+   SPRING PHYSICS & MOTION TOKENS
+   ═══════════════════════════════════════════ */
 @theme inline {
+  /* Spring presets for framer-motion */
+  --spring-bouncy: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --spring-snappy: cubic-bezier(0.85, 0, 0.15, 1);
+  --spring-smooth: cubic-bezier(0.35, 0, 0.25, 1);
+  --spring-gentle: cubic-bezier(0.32, 0, 0.67, 0);
+  
+  /* Spring timing (for CSS animations) */
+  --spring-duration-fast: 200ms;
+  --spring-duration-medium: 400ms;
+  --spring-duration-slow: 600ms;
+  --spring-duration-dramatic: 1000ms;
+
   --color-bg-primary: #0A0A0A;
   --color-bg-secondary: #F5F2ED;
   --color-bg-tertiary: #E8E4DE;
@@ -29,6 +44,10 @@
   --duration-normal: 500ms;
   --duration-slow: 700ms;
   --duration-dramatic: 900ms;
+  
+  /* Scroll-driven animation timeline */
+  --scroll-duration: 1s;
+  --scroll-ease: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 html {
@@ -112,6 +131,110 @@ body {
   to { transform: translateX(-50%); }
 }
 
+/* ═══════════════════════════════════════════
+   SCROLL-DRIVEN ANIMATIONS (CSS Native)
+   ═══════════════════════════════════════════ */
+
+/* Hero text parallax on scroll */
+@keyframes hero-reveal {
+  from {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-15%) scale(0.9);
+    opacity: 0.3;
+  }
+}
+
+@keyframes hero-fade {
+  from {
+    opacity: 0.3;
+    transform: translateY(30%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Section reveal animations */
+@keyframes section-enter {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Floating orb ambient motion */
+@keyframes float-orb-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -30px) scale(1.05); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+@keyframes float-orb-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-40px, 20px) scale(1.08); }
+  66% { transform: translate(30px, -40px) scale(0.92); }
+}
+
+@keyframes float-orb-c {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(20px, 30px) scale(1.1); }
+}
+
+/* Glow pulse */
+@keyframes glow-pulse {
+  0%, 100% { 
+    filter: drop-shadow(0 0 20px rgba(255, 77, 46, 0.3));
+  }
+  50% { 
+    filter: drop-shadow(0 0 40px rgba(255, 77, 46, 0.5));
+  }
+}
+
+/* Staggered children reveal */
+@keyframes stagger-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Magnetic cursor follow */
+@keyframes cursor-pulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.15);
+    opacity: 0.4;
+  }
+}
+
+/* Smooth gradient shift */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Progress bar fill */
+@keyframes progress-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -125,4 +248,139 @@ body {
   html {
     scroll-behavior: auto;
   }
+  
+  /* Disable scroll-driven animations gracefully */
+  .scroll-animate {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   CUSTOM CURSOR (Enhanced)
+   ═══════════════════════════════════════════ */
+.cursor {
+  pointer-events: none;
+  position: fixed;
+  z-index: 9999;
+  mix-blend-mode: difference;
+}
+
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s var(--spring-smooth),
+              width 0.2s var(--spring-smooth),
+              height 0.2s var(--spring-smooth);
+}
+
+.cursor-ring {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.4s var(--spring-gentle),
+              width 0.3s var(--spring-smooth),
+              height 0.3s var(--spring-smooth),
+              border-color 0.2s ease,
+              opacity 0.2s ease;
+}
+
+.cursor-ring.hovering {
+  width: 60px;
+  height: 60px;
+  border-color: var(--color-accent, #FF4D2E);
+}
+
+.cursor-dot.hovering {
+  width: 4px;
+  height: 4px;
+}
+
+/* Magnetic hover effect base */
+.magnetic {
+  transition: transform 0.3s var(--spring-smooth);
+}
+
+.magnetic:hover {
+  transform: scale(1.05);
+}
+
+/* ═══════════════════════════════════════════
+   SCROLL PROGRESS INDICATOR
+   ═══════════════════════════════════════════ */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-accent), #fff);
+  transform-origin: left;
+  z-index: 100;
+  transform: scaleX(0);
+  will-change: transform;
+}
+
+/* ═══════════════════════════════════════════
+   ENHANCED GRAIN TEXTURE
+   ═══════════════════════════════════════════ */
+.grain-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 50;
+  animation: grain-shift 8s steps(10) infinite;
+}
+
+@keyframes grain-shift {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-2%, -2%); }
+  20% { transform: translate(2%, 2%); }
+  30% { transform: translate(-1%, 2%); }
+  40% { transform: translate(2%, -1%); }
+  50% { transform: translate(-2%, 1%); }
+  60% { transform: translate(1%, -2%); }
+  70% { transform: translate(-1%, -1%); }
+  80% { transform: translate(2%, 1%); }
+  90% { transform: translate(-2%, 2%); }
+}
+
+/* ═══════════════════════════════════════════
+   BUTTON SPRING EFFECTS
+   ═══════════════════════════════════════════ */
+.btn-spring {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s var(--spring-bouncy),
+              box-shadow 0.4s var(--spring-smooth);
+}
+
+.btn-spring::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+  transform: translateX(-100%) rotate(45deg);
+  transition: transform 0.6s var(--spring-smooth);
+}
+
+.btn-spring:hover::before {
+  transform: translateX(100%) rotate(45deg);
+}
+
+.btn-spring:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.btn-spring:active {
+  transform: translateY(0) scale(0.98);
+  transition-duration: 0.1s;
 }

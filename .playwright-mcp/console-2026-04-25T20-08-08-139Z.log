@@ -1,0 +1,69 @@
+[     115ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/0avl_next_dist_0o7asmo._.js:2431
+[     194ms] [LOG] [Fast Refresh] done in 182ms @ http://localhost:3000/_next/static/chunks/0avl_next_dist_0o7asmo._.js:2431
+[     318ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/0avl_next_dist_0o7asmo._.js:2431
+[     351ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/0avl_next_dist_0o7asmo._.js:2431
+[  160398ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/0avl_next_dist_0o7asmo._.js:2431
+[  160415ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/0avl_next_dist_0o7asmo._.js:2431
+[  296348ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/0avl_next_dist_0o7asmo._.js:2431
+[  296530ms] [LOG] [Fast Refresh] done in 59ms @ http://localhost:3000/_next/static/chunks/0avl_next_dist_0o7asmo._.js:2431
+[  296562ms] ReferenceError: textBlockRef is not defined
+    at Hero (http://localhost:3000/_next/static/chunks/my-projects_yousef-designs_src_components_0r_4bj9._.js?id=%255Bproject%255D%252Fmy-projects%252Fyousef-designs%252Fsrc%252Fcomponents%252FHero.tsx+%255Bapp-client%255D+%2528ecmascript%2529:263:22)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:15037:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:4620:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:6081:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:6691:24)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:965:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:9555:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:9449:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:9433:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:9061:186)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:10263:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:10179:316)
+    at processRootScheduleInMicrotask (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:10200:106)
+    at http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:10274:158
+[  311871ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/0avl_next_dist_0o7asmo._.js:2431
+[  311875ms] [WARNING] [Fast Refresh] performing full reload because your application had an unrecoverable error @ http://localhost:3000/_next/static/chunks/0avl_next_dist_0o7asmo._.js:2431
+[  311903ms] ReferenceError: textBlockRef is not defined
+    at Hero (http://localhost:3000/_next/static/chunks/my-projects_yousef-designs_src_components_0r_4bj9._.js?id=%255Bproject%255D%252Fmy-projects%252Fyousef-designs%252Fsrc%252Fcomponents%252FHero.tsx+%255Bapp-client%255D+%2528ecmascript%2529:244:22)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:15037:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:4620:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:6081:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:6665:639)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:965:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:9555:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:9449:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:9433:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:9098:47)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:10263:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:10179:316)
+    at flushSyncWork$1 (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:9230:86)
+    at Object.scheduleRefresh (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:299:13)
+    at http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_0d_ta4m._.js:391:33
+    at Set.forEach (<anonymous>)
+    at Object.performReactRefresh (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_0d_ta4m._.js:384:38)
+    at applyUpdate (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_0d_ta4m._.js:878:31)
+    at http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_0d_ta4m._.js:886:13
+[  312230ms] [LOG] [Fast Refresh] done in 54ms @ http://localhost:3000/_next/static/chunks/0avl_next_dist_0o7asmo._.js:2431
+[  312253ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/:0
+[  312329ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/0avl_next_dist_0o7asmo._.js:2431
+[  312361ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/0avl_next_dist_0o7asmo._.js:2431
+[  312467ms] ReferenceError: textBlockRef is not defined
+    at Hero (http://localhost:3000/_next/static/chunks/my-projects_yousef-designs_src_components_0r_4bj9._.js:612:22)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:15037:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:4620:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:6081:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:6665:639)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:965:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:9555:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:9449:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:9433:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:9098:47)
+    at performWorkOnRootViaSchedulerTask (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_react-dom_030w2.7._.js:10255:9)
+    at MessagePort.performWorkUntilDeadline (http://localhost:3000/_next/static/chunks/0avl_next_dist_compiled_0d_ta4m._.js:2647:64)
+[  320483ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/0avl_next_dist_0o7asmo._.js:2431
+[  320485ms] [WARNING] [Fast Refresh] performing full reload because your application had an unrecoverable error @ http://localhost:3000/_next/static/chunks/0avl_next_dist_0o7asmo._.js:2431
+[  320808ms] [LOG] [Fast Refresh] done in 33ms @ http://localhost:3000/_next/static/chunks/0avl_next_dist_0o7asmo._.js:2431
+[  320891ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/0avl_next_dist_0o7asmo._.js:2431
+[  320911ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/0avl_next_dist_0o7asmo._.js:2431
+[  336239ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/0avl_next_dist_0o7asmo._.js:2431
+[  336431ms] [LOG] [Fast Refresh] done in 83ms @ http://localhost:3000/_next/static/chunks/0avl_next_dist_0o7asmo._.js:2431

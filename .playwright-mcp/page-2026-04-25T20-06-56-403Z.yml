@@ -1,0 +1,157 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]:
+        - link "Yousef" [ref=e5] [cursor=pointer]:
+          - /url: "#"
+        - generic [ref=e6]:
+          - link "Work" [ref=e7] [cursor=pointer]:
+            - /url: "#work"
+          - link "About" [ref=e8] [cursor=pointer]:
+            - /url: "#about"
+          - link "Services" [ref=e9] [cursor=pointer]:
+            - /url: "#services"
+          - link "Contact" [ref=e10] [cursor=pointer]:
+            - /url: "#contact"
+    - generic [ref=e12]:
+      - heading "Yousef" [level=1] [ref=e13]:
+        - generic [ref=e14]: "Y"
+        - generic [ref=e15]: o
+        - generic [ref=e16]: u
+        - generic [ref=e17]: s
+        - generic [ref=e18]: e
+        - generic [ref=e19]: f
+      - paragraph [ref=e20]: Designs
+      - paragraph [ref=e21]: I break conventions to build digital experiences that people remember.
+      - link "Explore Work" [ref=e22] [cursor=pointer]:
+        - /url: "#work"
+        - generic [ref=e23]: Explore Work
+        - img [ref=e25]
+    - generic [ref=e28]:
+      - generic [ref=e30]:
+        - generic [ref=e32]: ABOUT
+        - paragraph [ref=e33]:
+          - generic [ref=e34]: Lawyer
+          - generic [ref=e35]: turned
+          - generic [ref=e36]: designer.
+          - generic [ref=e37]: I
+          - generic [ref=e38]: don't
+          - generic [ref=e39]: do
+          - generic [ref=e40]: safe.
+          - generic [ref=e41]: I
+          - generic [ref=e42]: take
+          - generic [ref=e43]: brands
+          - generic [ref=e44]: apart
+          - generic [ref=e45]: and
+          - generic [ref=e46]: rebuild
+          - generic [ref=e47]: them
+          - generic [ref=e48]: into
+          - generic [ref=e49]: experiences
+          - generic [ref=e50]: that
+          - generic [ref=e51]: demand
+          - generic [ref=e52]: attention.
+          - generic [ref=e53]: From
+          - generic [ref=e54]: product
+          - generic [ref=e55]: interfaces
+          - generic [ref=e56]: to
+          - generic [ref=e57]: full
+          - generic [ref=e58]: brand
+          - generic [ref=e59]: systems
+          - generic [ref=e60]: —
+          - generic [ref=e61]: Google
+          - generic [ref=e62]: UX
+          - generic [ref=e63]: certified,
+          - generic [ref=e64]: CalArts
+          - generic [ref=e65]: trained,
+          - generic [ref=e66]: and
+          - generic [ref=e67]: built
+          - generic [ref=e68]: "on"
+          - generic [ref=e69]: chaos.
+      - generic [ref=e81]:
+        - generic [ref=e82]: Google UX •
+        - generic [ref=e83]: CalArts •
+        - generic [ref=e84]: Notion Academy •
+        - generic [ref=e85]: The Math Mentor •
+        - generic [ref=e86]: Outline •
+        - generic [ref=e87]: Teacher Flow •
+        - generic [ref=e88]: Google UX •
+        - generic [ref=e89]: CalArts •
+        - generic [ref=e90]: Notion Academy •
+        - generic [ref=e91]: The Math Mentor •
+        - generic [ref=e92]: Outline •
+        - generic [ref=e93]: Teacher Flow •
+    - generic [ref=e94]:
+      - generic [ref=e95]:
+        - heading "Selected Work" [level=2] [ref=e96]
+        - generic [ref=e97]: SELECTED WORK
+      - generic [ref=e98]:
+        - link "01 The Math Mentor Brand Identity — 2025" [ref=e99] [cursor=pointer]:
+          - /url: /projects/math-mentor/
+          - generic: "01"
+          - generic [ref=e100]:
+            - generic [ref=e101]: The Math Mentor
+            - generic [ref=e102]: Brand Identity — 2025
+        - link "02 Teacher Flow Product Design — 2025" [ref=e103] [cursor=pointer]:
+          - /url: /projects/teacher-flow/
+          - generic: "02"
+          - generic [ref=e104]:
+            - generic [ref=e105]: Teacher Flow
+            - generic [ref=e106]: Product Design — 2025
+        - link "03 Outline Brand Identity — 2023" [ref=e107] [cursor=pointer]:
+          - /url: /projects/outline/
+          - generic: "03"
+          - generic [ref=e108]:
+            - generic [ref=e109]: Outline
+            - generic [ref=e110]: Brand Identity — 2023
+    - generic [ref=e111]:
+      - generic [ref=e113]:
+        - generic [ref=e115]:
+          - heading "Product Design" [level=3] [ref=e117]
+          - paragraph [ref=e118]: Interfaces that don't just look good — they convert, retain, and delight.
+        - generic [ref=e128]:
+          - generic [ref=e129]:
+            - heading "Brand Identity" [level=3] [ref=e131]
+            - paragraph [ref=e132]: Visual systems that tell your story before a single word is read.
+          - generic [ref=e135]: B
+        - generic [ref=e136]:
+          - generic [ref=e137]:
+            - heading "Web Experiences" [level=3] [ref=e139]
+            - paragraph [ref=e140]: Websites that feel like products. Performance, accessibility, and wow factor — all included.
+          - img [ref=e143]
+      - generic [ref=e146]:
+        - paragraph [ref=e147]: Got a project that scares other designers? That's my sweet spot.
+        - link "Start a Conversation" [ref=e148] [cursor=pointer]:
+          - /url: mailto:youseefkhald@gmail.com
+          - generic [ref=e149]: Start a Conversation
+          - img [ref=e151]
+    - generic [ref=e154]:
+      - heading "Let's make something that breaks the internet." [level=2] [ref=e155]
+      - paragraph [ref=e156]: Yousef Designs
+      - generic [ref=e157]:
+        - link "youseefkhald@gmail.com" [ref=e158] [cursor=pointer]:
+          - /url: mailto:youseefkhald@gmail.com
+        - generic [ref=e159]: Cairo, Egypt
+        - link "framer.com/yousefkhaled" [ref=e160] [cursor=pointer]:
+          - /url: https://www.framer.com/yousefkhaled
+      - generic [ref=e161]:
+        - link "LinkedIn" [ref=e162] [cursor=pointer]:
+          - /url: "#"
+          - img [ref=e163]
+          - generic [ref=e165]: LinkedIn
+        - link "Dribbble" [ref=e166] [cursor=pointer]:
+          - /url: "#"
+          - img [ref=e167]
+          - generic [ref=e169]: Dribbble
+        - link "Behance" [ref=e170] [cursor=pointer]:
+          - /url: "#"
+          - img [ref=e171]
+          - generic [ref=e173]: Behance
+        - link "GitHub" [ref=e174] [cursor=pointer]:
+          - /url: "#"
+          - img [ref=e175]
+          - generic [ref=e177]: GitHub
+      - button "Back to top" [ref=e178] [cursor=pointer]:
+        - img [ref=e179]
+      - paragraph [ref=e181]: © 2026 Yousef Khaled. Built with chaos and caffeine. Cairo, Egypt.
+  - button "Open Next.js Dev Tools" [ref=e187] [cursor=pointer]:
+    - img [ref=e188]

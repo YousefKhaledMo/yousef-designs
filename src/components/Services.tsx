@@ -1,8 +1,15 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
-import { useRef } from "react";
+import { motion, useInView, useReducedMotion, Variants } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
 import { ArrowRight } from "@phosphor-icons/react";
+
+// Spring presets
+const springs = {
+  gentle: { type: "spring" as const, stiffness: 100, damping: 20 },
+  snappy: { type: "spring" as const, stiffness: 300, damping: 25 },
+  bouncy: { type: "spring" as const, stiffness: 400, damping: 15 },
+};
 
 const services = [
   {
@@ -28,46 +35,57 @@ const services = [
   },
 ];
 
-const primaryEase: [number, number, number, number] = [0.32, 0.72, 0, 1];
-
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: {},
   visible: {
     transition: {
       staggerChildren: 0.15,
+      delayChildren: 0.1,
     },
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: {
     opacity: 0,
-    y: 40,
+    y: 60,
+    scale: 0.95,
   },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.9,
-      ease: primaryEase,
-    },
+    scale: 1,
+    transition: springs.bouncy,
   },
 };
 
 function WireframeCube() {
+  const prefersReducedMotion = useReducedMotion();
+  
   return (
     <div className="relative w-24 h-24 md:w-32 md:h-32" style={{ perspective: "400px" }}>
-      <div
+      <motion.div
         className="w-full h-full"
-        style={{
-          transformStyle: "preserve-3d",
-          animation: "spin-cube 20s linear infinite",
+        style={{ transformStyle: "preserve-3d" }}
+        animate={prefersReducedMotion ? {} : {
+          rotateX: [-20, 10, -20],
+          rotateY: [0, 180, 360],
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: "linear",
         }}
       >
         {/* Front */}
-        <div
+        <motion.div
           className="absolute inset-0 border border-[#0A0A0A]/15"
           style={{ transform: "translateZ(48px)" }}
+          whileHover={prefersReducedMotion ? {} : {
+            borderColor: "rgba(255, 77, 46, 0.3)",
+            scale: 1.02,
+            transition: { type: "spring", stiffness: 400, damping: 20 },
+          }}
         />
         {/* Back */}
         <div
@@ -94,27 +112,63 @@ function WireframeCube() {
           className="absolute inset-0 border border-[#0A0A0A]/15"
           style={{ transform: "translateY(48px) rotateX(-90deg)" }}
         />
-      </div>
+      </motion.div>
     </div>
   );
 }
 
 function GlyphB() {
+  const prefersReducedMotion = useReducedMotion();
+  
   return (
-    <div className="relative w-24 h-24 md:w-32 md:h-32 flex items-center justify-center">
+    <motion.div 
+      className="relative w-24 h-24 md:w-32 md:h-32 flex items-center justify-center"
+      animate={prefersReducedMotion ? {} : {
+        rotate: [0, 360],
+      }}
+      transition={{
+        duration: 20,
+        repeat: Infinity,
+        ease: "linear",
+      }}
+    >
       <span
         className="font-[family-name:var(--font-bebas-neue)] text-[clamp(4rem,10vw,8rem)] leading-none text-[#0A0A0A]/15 select-none"
-        style={{ animation: "spin-slow 20s linear infinite" }}
       >
         B
       </span>
-    </div>
+      {/* Glow effect */}
+      <motion.div
+        className="absolute inset-0 bg-accent/10 rounded-full blur-xl"
+        animate={prefersReducedMotion ? {} : {
+          scale: [0.8, 1.2, 0.8],
+          opacity: [0.3, 0.6, 0.3],
+        }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+    </motion.div>
   );
 }
 
 function CursorArrow() {
+  const prefersReducedMotion = useReducedMotion();
+  
   return (
-    <div className="relative w-24 h-24 md:w-32 md:h-32 flex items-center justify-center">
+    <motion.div 
+      className="relative w-24 h-24 md:w-32 md:h-32 flex items-center justify-center"
+      animate={prefersReducedMotion ? {} : {
+        rotate: [0, 360],
+      }}
+      transition={{
+        duration: 20,
+        repeat: Infinity,
+        ease: "linear",
+      }}
+    >
       <svg
         width="48"
         height="48"
@@ -125,11 +179,40 @@ function CursorArrow() {
         strokeLinecap="round"
         strokeLinejoin="round"
         className="text-[#0A0A0A]/15"
-        style={{ animation: "spin-slow 20s linear infinite" }}
       >
         <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z" />
       </svg>
-    </div>
+      {/* Trail effect */}
+      {[...Array(3)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute inset-0"
+          style={{
+            opacity: 0.1 * (3 - i),
+          }}
+          animate={prefersReducedMotion ? {} : {
+            rotate: [i * 30, 360 + i * 30],
+          }}
+          transition={{
+            duration: 3 - i * 0.5,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        >
+          <svg
+            width="48"
+            height="48"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1"
+            className="text-[#0A0A0A]/10"
+          >
+            <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z" />
+          </svg>
+        </motion.div>
+      ))}
+    </motion.div>
   );
 }
 
@@ -146,6 +229,84 @@ function ServiceShape({ shape }: { shape: string }) {
   }
 }
 
+// Magnetic CTA Button
+function MagneticCTA({ href, children }: { href: string; children: React.ReactNode }) {
+  const buttonRef = useRef<HTMLAnchorElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+  const [isHovered, setIsHovered] = useState(false);
+  
+  useEffect(() => {
+    if (prefersReducedMotion || !buttonRef.current) return;
+
+    const button = buttonRef.current;
+    let rafId: number;
+    let mouseX = 0;
+    let mouseY = 0;
+    let buttonX = 0;
+    let buttonY = 0;
+
+    const lerp = (start: number, end: number, factor: number) => 
+      start + (end - start) * factor;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = button.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      mouseX = e.clientX - centerX;
+      mouseY = e.clientY - centerY;
+    };
+
+    const animate = () => {
+      buttonX = lerp(buttonX, mouseX * 0.3, 0.15);
+      buttonY = lerp(buttonY, mouseY * 0.3, 0.15);
+
+      button.style.transform = `translate(${buttonX}px, ${buttonY}px)`;
+      rafId = requestAnimationFrame(animate);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    rafId = requestAnimationFrame(animate);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      cancelAnimationFrame(rafId);
+    };
+  }, [prefersReducedMotion]);
+
+  return (
+    <motion.a
+      ref={buttonRef}
+      href={href}
+      className="group mt-10 inline-flex items-center gap-3 rounded-full bg-white/5 border border-white/10 px-6 py-3"
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      whileHover={prefersReducedMotion ? {} : { 
+        scale: 1.08,
+        y: -3,
+      }}
+      whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
+      transition={{ type: "spring", stiffness: 400, damping: 15 }}
+    >
+      <span className="font-[family-name:var(--font-sora)] text-sm text-text-primary-light">
+        {children}
+      </span>
+      <motion.span 
+        className="relative flex items-center justify-center w-8 h-8 rounded-full bg-white/10"
+        animate={isHovered && !prefersReducedMotion ? {
+          x: 2,
+          y: -2,
+        } : {}}
+        transition={{ type: "spring", stiffness: 500, damping: 20 }}
+      >
+        <ArrowRight
+          className="w-4 h-4 text-text-primary-light"
+          weight="bold"
+        />
+      </motion.span>
+    </motion.a>
+  );
+}
+
 export default function Services() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
@@ -159,95 +320,100 @@ export default function Services() {
     >
       {/* Service Blocks */}
       <div className="py-16 md:py-24 px-4 md:px-8 lg:px-16">
-          <motion.div
-            variants={containerVariants}
-            initial={prefersReducedMotion ? "visible" : "hidden"}
-            animate={isInView ? "visible" : prefersReducedMotion ? "visible" : "hidden"}
-            className="max-w-[1400px] mx-auto"
-          >
-          {services.map((service) => (
+        <motion.div
+          variants={containerVariants}
+          initial={prefersReducedMotion ? "visible" : "hidden"}
+          animate={isInView ? "visible" : prefersReducedMotion ? "visible" : "hidden"}
+          className="max-w-[1400px] mx-auto"
+        >
+          {services.map((service, index) => (
             <motion.div
               key={service.id}
               variants={itemVariants}
-              initial={prefersReducedMotion ? { opacity: 1, y: 0 } : "hidden"}
-              animate={prefersReducedMotion ? { opacity: 1, y: 0 } : "visible"}
+              initial={prefersReducedMotion ? { opacity: 1, y: 0, scale: 1 } : "hidden"}
+              animate={prefersReducedMotion ? { opacity: 1, y: 0, scale: 1 } : "visible"}
               className="group relative flex flex-col md:flex-row md:items-center md:justify-between py-8 md:py-14 first:pt-0 last:pb-0"
             >
               {/* Text Content ~70% */}
               <div className="md:w-[70%] md:pr-12">
-                {/* Title with hover shift */}
-                <div className="relative inline-block">
-                  <h3 className="font-[family-name:var(--font-bebas-neue)] text-[clamp(3rem,8vw,8rem)] leading-[1.0] text-[#0A0A0A] transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-4">
+                {/* Title with magnetic shift effect */}
+                <div className="relative inline-block overflow-visible">
+                  <motion.h3
+                    className="font-[family-name:var(--font-bebas-neue)] text-[clamp(3rem,8vw,8rem)] leading-[1.0] text-[#0A0A0A]"
+                    whileHover={prefersReducedMotion ? {} : {
+                      x: 12,
+                      transition: { type: "spring", stiffness: 400, damping: 20 },
+                    }}
+                  >
                     {service.title}
-                  </h3>
-                  {/* Horizontal line under title */}
-                  <div className="mt-2 h-[2px] bg-[#0A0A0A] origin-left scale-x-0 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-x-100" />
+                  </motion.h3>
+                  
+                  {/* Magnetic line underline */}
+                  <motion.div
+                    className="mt-2 h-[2px] bg-[#0A0A0A] origin-left"
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ ...springs.bouncy, delay: 0.2 }}
+                    whileHover={prefersReducedMotion ? {} : {
+                      scaleX: 1.1,
+                      backgroundColor: "#FF4D2E",
+                      transition: { type: "spring", stiffness: 400, damping: 20 },
+                    }}
+                  />
                 </div>
 
                 {/* Description */}
-                <p className="font-[family-name:var(--font-sora)] text-[clamp(1rem,1.5vw,1.25rem)] text-[#0A0A0A]/70 max-w-[50ch] mt-6 leading-relaxed">
+                <motion.p
+                  className="font-[family-name:var(--font-sora)] text-[clamp(1rem,1.5vw,1.25rem)] text-[#0A0A0A]/70 max-w-[50ch] mt-6 leading-relaxed"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ ...springs.gentle, delay: 0.3 }}
+                >
                   {service.description}
-                </p>
+                </motion.p>
               </div>
 
               {/* Shape ~30% */}
-              <div className="hidden md:flex md:w-[30%] md:justify-end md:items-center mt-8 md:mt-0">
+              <motion.div
+                className="hidden md:flex md:w-[30%] md:justify-end md:items-center mt-8 md:mt-0"
+                whileHover={prefersReducedMotion ? {} : {
+                  scale: 1.1,
+                  transition: { type: "spring", stiffness: 300, damping: 20 },
+                }}
+              >
                 <ServiceShape shape={service.shape} />
-              </div>
+              </motion.div>
             </motion.div>
           ))}
         </motion.div>
       </div>
 
       {/* CTA Block */}
-      <div className="bg-[#0A0A0A] py-16 px-4 md:px-8">
+      <motion.div
+        className="bg-[#0A0A0A] py-16 px-4 md:px-8"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ ...springs.bouncy, delay: 0.2 }}
+      >
         <div className="max-w-[1400px] mx-auto flex flex-col items-center text-center">
-          <p className="font-[family-name:var(--font-sora)] text-[clamp(1.5rem,3vw,2.5rem)] text-text-primary-light leading-snug max-w-[35ch]">
-            Got a project that scares other designers? That&apos;s my sweet spot.
-          </p>
-
-          <a
-            href="mailto:youseefkhald@gmail.com"
-            className="group mt-10 inline-flex items-center gap-3 rounded-full bg-white/5 border border-white/10 px-6 py-3 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+          <motion.p
+            className="font-[family-name:var(--font-sora)] text-[clamp(1.5rem,3vw,2.5rem)] text-text-primary-light leading-snug max-w-[35ch]"
+            whileHover={prefersReducedMotion ? {} : {
+              scale: 1.02,
+              transition: { type: "spring", stiffness: 300, damping: 20 },
+            }}
           >
-            <span className="font-[family-name:var(--font-sora)] text-sm text-text-primary-light">
-              Start a Conversation
-            </span>
-            <span className="relative flex items-center justify-center w-8 h-8 rounded-full bg-white/10 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-              <ArrowRight
-                className="w-4 h-4 text-text-primary-light"
-                weight="bold"
-              />
-            </span>
-          </a>
-        </div>
-      </div>
+            Got a project that scares other designers? That&apos;s my sweet spot.
+          </motion.p>
 
-      {/* Keyframe animations */}
-      <style>{`
-        @keyframes spin-cube {
-          from {
-            transform: rotateX(-20deg) rotateY(0deg);
-          }
-          to {
-            transform: rotateX(-20deg) rotateY(360deg);
-          }
-        }
-        @keyframes spin-slow {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          [style*="animation: spin-cube"],
-          [style*="animation: spin-slow"] {
-            animation: none !important;
-          }
-        }
-      `}</style>
+          <MagneticCTA href="mailto:youseefkhald@gmail.com">
+            Start a Conversation
+          </MagneticCTA>
+        </div>
+      </motion.div>
     </section>
   );
 }
